@@ -1,0 +1,15 @@
+{
+    "java.project.sourcePaths": ["src"],
+    "java.project.outputPath": "bin",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar"
+    ],
+    "java.configuration.runtimes": [
+{
+"name":"JavaSE-17",
+"path": "G:\\java\\jdk-17\\jre",
+"sources": "G:\\java\\jdk-17\\jre\\lib\\src.zip",
+"default": true
+}
+    ]
+}
