@@ -21,7 +21,7 @@ public class App extends Application {
     var icoPath = ResourceUtil.getResourceURLStr("rabbity.ico");
     Image image = new Image(icoPath);
     Scene scene = new Scene(mainUI);
-    var url = ResourceUtil.getResourceURLStr("css/style.css");
+    var url = ResourceUtil.getResourceURLStr("css/styles.css");
     scene.getStylesheets().add(url);
     stage.setScene(scene);
     stage.getIcons().add(image);

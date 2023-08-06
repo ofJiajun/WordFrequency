@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -18,13 +19,15 @@ public class WordFrequency {
     }
 
     public List<Map.Entry<String, Integer>> getWordFrequency(String textPath, boolean order) throws IOException {
+        // get text
         String text = Files.readString(Paths.get(textPath));
-
-        // split word text into a string array
-        String[] words = text.split("\\b");
+        String[] wordsStr = text.split("\\b");
+        long startTime = System.currentTimeMillis();
+        List<String> words = new LinkedList<>(Arrays.asList(wordsStr));
         // ignoring cap case, clear the repeating element of string array
         Set<String> wordsSet = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-        wordsSet.addAll(Arrays.asList(words));
+        wordsSet.addAll(words);
+
         Map<String, Integer> wordFrequence = new HashMap<>();
         for (String s1 : wordsSet) {
             int count = 0;
@@ -42,8 +45,12 @@ public class WordFrequency {
             if (count != 0) {
                 wordFrequence.put(s1, count);
             }
+            words.remove(s1);
         }
         List<Map.Entry<String, Integer>> entryList = sortFrequency(wordFrequence, order);
+        long endTime = System.currentTimeMillis();
+        System.out.println("计算结果用时 :" + (endTime - startTime));
+
         return entryList;
     }
 
@@ -51,7 +58,7 @@ public class WordFrequency {
         // sort and output
         List<Map.Entry<String, Integer>> entryList = new ArrayList<>(wordFrequence.entrySet());
 
-                // sort entryList
+        // sort entryList
         if (order == true) {
             Collections.sort(entryList, new Comparator<Map.Entry<String, Integer>>() {
                 @Override

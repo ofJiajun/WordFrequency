@@ -11,7 +11,6 @@ import java.util.Map;
 import javafx.application.HostServices;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -112,7 +111,7 @@ public class UI extends GridPane {
     HBox hb = new HBox();
     hb.getChildren().addAll(orderTfld, okBtn);
     Scene scene = new Scene(hb);
-    var url = ResourceUtil.getResourceURLStr("css/style.css");
+    var url = ResourceUtil.getResourceURLStr("css/styles.css");
     scene.getStylesheets().add(url);
     stage = new Stage();
     stage.setScene(scene);
@@ -146,7 +145,7 @@ public class UI extends GridPane {
           countingResult = wf.getWordFrequency(path, true);
         }
       } catch (IOException e) {
-        // do nothing
+        System.out.println("IO1:" + e);
       }
 
       // output the result
@@ -228,7 +227,7 @@ public class UI extends GridPane {
     HBox hb = new HBox();
     hb.getChildren().addAll(vb1, minTfld, maxTfld, vb2, orderTfld, okBtn);
     Scene scene = new Scene(hb);
-    var url = ResourceUtil.getResourceURLStr("css/style.css");
+    var url = ResourceUtil.getResourceURLStr("css/styles.css");
     scene.getStylesheets().add(url);
     stage = new Stage();
     stage.setScene(scene);
@@ -289,7 +288,7 @@ public class UI extends GridPane {
           countingResult = wf.getWordFrequency(importPath.get(), true);
         }
       } catch (IOException e) {
-        // do nothing
+        System.out.println("IO2: " + e);
       }
 
       // output the result
@@ -312,7 +311,7 @@ public class UI extends GridPane {
         writer.close();
         resultLv.getItems().add("導出成功！路徑： " + exportPath.get());
       } catch (IOException e) {
-        System.out.println("output path error: " + e);
+        System.out.println("output error1: " + e);
       }
     } else {
       resultLv.getItems().clear();
@@ -361,7 +360,7 @@ public class UI extends GridPane {
           countingResult = wf.getWordFrequency(importPath.get(), true);
         }
       } catch (IOException e) {
-        // do nothing
+        System.out.println("IO3: " + e);
       }
 
       // output the result
@@ -386,7 +385,7 @@ public class UI extends GridPane {
         writer.close();
         resultLv.getItems().add("導出成功！路徑： " + exportPath.get());
       } catch (IOException e) {
-        System.out.println("output path error: " + e);
+        System.out.println("output error2: " + e);
       }
     } else {
       resultLv.getItems().clear();
