@@ -19,11 +19,11 @@ public class WordFrequency {
     }
 
     public List<Map.Entry<String, Integer>> getWordFrequency(String textPath, boolean order) throws IOException {
+        // count the time of the program running
+        long startTime = System.currentTimeMillis();
         // get text
         String text = Files.readString(Paths.get(textPath));
-        String[] wordsStr = text.split("\\b");
-        long startTime = System.currentTimeMillis();
-        List<String> words = new LinkedList<>(Arrays.asList(wordsStr));
+        List<String> words = new LinkedList<>(Arrays.asList(text.split("\\b")));
         // ignoring cap case, clear the repeating element of string array
         Set<String> wordsSet = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
         wordsSet.addAll(words);
