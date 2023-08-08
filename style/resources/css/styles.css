@@ -1,0 +1,103 @@
+.root {
+  -fx-background-color: lightblue;
+  -fx-padding: 20px;
+}
+
+.button {
+  -fx-background-color: brown;
+  -fx-text-fill: white;
+  -fx-font-size: 14px;
+  -fx-font-weight: bold;
+  -fx-pref-width: 100px;
+  -fx-pref-height: 30px;
+  -fx-background-radius: 5px;
+  -fx-padding: 10px;
+  -fx-alignment: center;
+  -fx-cursor: hand;
+  -fx-background-color-hover: lightgreen;
+  -fx-background-color-pressed: red;
+  -fx-text-fill-disabled: transparent;
+}
+
+.text-field {
+  -fx-background-color: white;
+  -fx-text-fill: grey;
+  -fx-font-size: 14px;
+  -fx-font-family: Arial;
+  -fx-prompt-text-fill: lightgreen;
+  -fx-alignment: center-left;
+  -fx-border-color: grey;
+  -fx-border-width: 1px;
+  -fx-border-radius: 5px;
+  -fx-background-radius: 5px;
+  -fx-padding: 10px;
+}
+
+.vbox {
+  -fx-spacing: 10px;
+  -fx-alignment: center;
+  -fx-fill-width: true;
+  -fx-padding: 10px;
+  -fx-background-color: white;
+  -fx-border-color: grey;
+  -fx-border-width: 1px;
+  -fx-effect: dropshadow(gaussian, black, 10, 0, 2, 2);
+  -fx-border-radius: 5px;
+  -fx-border-insets: 10px;
+  -fx-background-radius: 5px;
+  -fx-background-insets: 10px;
+}
+
+.hbox {
+  -fx-spacing: 10px;
+  -fx-alignment: center;
+  -fx-fill-height: true;
+  -fx-padding: 10px;
+  -fx-background-color: white;
+  -fx-border-color: gray;
+  -fx-border-width: 1px;
+  -fx-border-radius: 5px;
+  -fx-effect: dropshadow(gaussian, black, 10, 0, 2, 2);
+}
+
+.list-view {
+  -fx-background-color: blue;
+  -fx-font-size: 14px;
+  -fx-font-family: Arial;
+  -fx-text-fill: white;
+  -fx-padding: 10px;
+  -fx-cell-size: 50px;
+  -fx-cell-spacing: 5px;
+  -fx-spacing: 10px;
+  -fx-alignment: center-left;
+  -fx-border-color: yellow;
+  -fx-border-width: 1px;
+  -fx-background-radius: 5px;
+}
+
+.radio-button {
+  -fx-text-fill: white;
+  -fx-font-size: 14px;
+  -fx-font-weight: bold;
+  -fx-text-alignment: center;
+  -fx-padding: 10px;
+  -fx-background-color: green;
+  -fx-border-color: yellow;
+  -fx-border-radius: 5px;
+  -fx-spacing: 10px;
+  -fx-cursor: hand;
+  -fx-background-color-hover: yellow;
+  -fx-background-color-pressed: red;
+  -fx-background-color-selected: red;
+}
+
+.label {
+  -fx-font-size: 16px;
+  -fx-font-weight: bold;
+  -fx-text-fill: grey;
+}
+
+.image-view {
+  -fx-fit-width: 100%;
+  -fx-fit-height: 100%;
+}
