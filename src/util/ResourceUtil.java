@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.net.URL;
 
 public class ResourceUtil {
-  private final static String RSRC_PATH_FROM_CURRENT_DIR = "bin";
+  private final static String RSRC_PATH_FROM_CURRENT_DIR = "style";
 
   public static URL getResourceURL(String inResourcesPath) {
     var FileString = (RSRC_PATH_FROM_CURRENT_DIR + "/resources/" + inResourcesPath).replace("/", File.separator);

@@ -189,7 +189,7 @@ public class UI extends GridPane {
             resultLv.getItems().add(item);
           }
           long b = System.currentTimeMillis();
-          System.out.println("添加用时: " + (b - a));
+          System.out.println("UI 刷新用时: " + (b - a));
         });
       });
       ioThread.start();
@@ -235,6 +235,7 @@ public class UI extends GridPane {
     TextField exportPathTfld = new TextField();
     exportPathTfld.setPromptText("鍵入導出路徑或點擊 Browse button");
     exportPathTfld.textProperty().bindBidirectional(exportPath);
+    exportPathTfld.setText(importPath.get().split("\\.")[0] + "_WordFrequency.txt");
     VBox vb2 = new VBox();
     vb2.getChildren().addAll(browseBtn, exportPathTfld);
 
@@ -348,7 +349,7 @@ public class UI extends GridPane {
           }
           writer.close();
           long b = System.currentTimeMillis();
-          System.out.println("输出用时: " + (b - a));
+          System.out.println("写出用时: " + (b - a));
         } catch (IOException e) {
           System.out.println("output error1: " + e);
         }
@@ -363,7 +364,7 @@ public class UI extends GridPane {
             resultLv.getItems().add(item);
           }
           long b = System.currentTimeMillis();
-          System.out.println("添加用时: " + (b - a));
+          System.out.println("UI 刷新用时: " + (b - a));
         });
       });
       ioThread.start();
@@ -454,7 +455,7 @@ public class UI extends GridPane {
             resultLv.getItems().add(result);
           }
           long b = System.currentTimeMillis();
-          System.out.println("添加用时: " + (b - a));
+          System.out.println("UI 刷新用时: " + (b - a));
         });
       });
       ioThread.start();

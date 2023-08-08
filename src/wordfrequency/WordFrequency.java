@@ -1,79 +1,46 @@
 package wordfrequency;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 
 public class WordFrequency {
-    public WordFrequency() {
-    }
-
     public List<Map.Entry<String, Integer>> getWordFrequency(String textPath, boolean order) throws IOException {
-        // count the time of the program running
-        long startTime = System.currentTimeMillis();
-        // get text
-        String text = Files.readString(Paths.get(textPath));
-        List<String> words = new LinkedList<>(Arrays.asList(text.split("\\b")));
-        // ignoring cap case, clear the repeating element of string array
-        Set<String> wordsSet = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-        wordsSet.addAll(words);
-
-        Map<String, Integer> wordFrequence = new HashMap<>();
-        for (String s1 : wordsSet) {
-            int count = 0;
-            // match all punctuation
-            String pattern = "[\\p{P}\\s]+";
-            for (String s2 : words) {
-                // do not count the frequence of punctuation
-                if (s1.matches(pattern)) {
-                    continue;
-                }
-                if (s1.toLowerCase().equals(s2.toLowerCase())) {
-                    count++;
-                }
-            }
-            if (count != 0) {
-                wordFrequence.put(s1, count);
-            }
-            words.remove(s1);
+        WordCount wc = new WordCount();
+        long a = System.currentTimeMillis();
+        List<Map.Entry<String, Integer>> entryList;
+        long size = Files.size(Paths.get(textPath)) / 1024;
+        if (size <= 50) {
+            entryList = wc.count(textPath, 1, order);
+        } else if ((size > 50) && (size < Integer.MAX_VALUE)) {
+            // more files will ask more new threads
+            entryList = wc.count(textPath, 10, order);
+        } else {
+            return null;
         }
-        List<Map.Entry<String, Integer>> entryList = sortFrequency(wordFrequence, order);
-        long endTime = System.currentTimeMillis();
-        System.out.println("计算结果用时 :" + (endTime - startTime));
 
+        // clear temp files
+        deleteFolder(new File("./temp"));
+
+        long b = System.currentTimeMillis();
+        System.out.println("全流程用时： " + (b - a));
         return entryList;
     }
 
-    public List<Map.Entry<String, Integer>> sortFrequency(Map<String, Integer> wordFrequence, boolean order) {
-        // sort and output
-        List<Map.Entry<String, Integer>> entryList = new ArrayList<>(wordFrequence.entrySet());
-
-        // sort entryList
-        if (order == true) {
-            Collections.sort(entryList, new Comparator<Map.Entry<String, Integer>>() {
-                @Override
-                public int compare(Map.Entry<String, Integer> entry1, Map.Entry<String, Integer> entry2) {
-                    return entry2.getValue().compareTo(entry1.getValue());
+    public void deleteFolder(File folder) {
+        File[] files = folder.listFiles();
+        if (files != null) {
+            for (File f : files) {
+                if (f.isDirectory()) {
+                    deleteFolder(f);
+                } else {
+                    f.delete();
                 }
-            });
-        } else {
-            Collections.sort(entryList, new Comparator<Map.Entry<String, Integer>>() {
-                @Override
-                public int compare(Map.Entry<String, Integer> entry1, Map.Entry<String, Integer> entry2) {
-                    return entry1.getValue().compareTo(entry2.getValue());
-                }
-            });
+            }
         }
-        return entryList;
+        folder.delete();
     }
 }
