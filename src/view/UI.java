@@ -19,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.ToggleGroup;
@@ -40,8 +41,9 @@ public class UI extends GridPane {
   private ListView<String> resultLv;
   List<Map.Entry<String, Integer>> countingResult;
   private WordFrequency wf = new WordFrequency();
-  private StringProperty importPath = new SimpleStringProperty("");
-  private StringProperty exportPath = new SimpleStringProperty("");
+  private StringProperty importPath = new SimpleStringProperty(""); // import path
+  private StringProperty exportPath = new SimpleStringProperty(""); // export path
+  private File lastDirectory = new File("."); // store the last open/save path
 
   public UI(HostServices hostServices) {
     this.hostServices = hostServices;
@@ -72,8 +74,10 @@ public class UI extends GridPane {
     resultLv = new ListView<>();
     resultLv.setAccessibleText("结果");
     searchWord(resultLv);
+    ScrollPane scrollPane = new ScrollPane();
+    scrollPane.setContent(resultLv);
     VBox centralPane = new VBox();
-    centralPane.getChildren().addAll(listLbl, resultLv);
+    centralPane.getChildren().addAll(listLbl, scrollPane);
 
     // add a image and a button clearing the list
     var url = ResourceUtil.getResourceURLStr("resources/rabbity.ico");
@@ -108,17 +112,19 @@ public class UI extends GridPane {
   private void addSelectionBox(boolean os, StringProperty path) {
     FileChooser fileChooser = new FileChooser();
     // fileChooser.setTitle("Select File");
-    fileChooser.setInitialDirectory(new File("."));
+    fileChooser.setInitialDirectory(lastDirectory);
     FileChooser.ExtensionFilter fileFilter = new FileChooser.ExtensionFilter("All Files", "*.*");
     fileChooser.getExtensionFilters().add(fileFilter);
     if (os == true) {
       File file = fileChooser.showOpenDialog(stage);
       if (file != null) {
+        lastDirectory = file.getParentFile();
         path.set(file.getAbsolutePath());
       }
     } else {
       File file = fileChooser.showSaveDialog(stage);
       if (file != null) {
+        lastDirectory = file.getParentFile();
         path.set(file.getAbsolutePath());
       }
     }
@@ -130,9 +136,10 @@ public class UI extends GridPane {
     orderTfld.setTextFormatter(orderFormatter());
     Button okBtn = new Button("确认");
     okBtn.setOnAction(e -> countFrequency(importPath.get(), orderTfld));
-
+    Button cancelBtn = new Button("取消");
+    cancelBtn.setOnAction(e -> stage.close());
     HBox hb = new HBox();
-    hb.getChildren().addAll(orderTfld, okBtn);
+    hb.getChildren().addAll(orderTfld, okBtn, cancelBtn);
     Scene scene = new Scene(hb);
     var url = ResourceUtil.getResourceURLStr("css/styles.css");
     scene.getStylesheets().add(url);
@@ -180,7 +187,6 @@ public class UI extends GridPane {
 
         // after I/O, using Platform.runLater() to update UI
         Platform.runLater(() -> {
-          long a = System.currentTimeMillis();
           resultLv.getItems().clear();
           for (Map.Entry<String, Integer> entry : countingResult) {
             String word = entry.getKey();
@@ -188,8 +194,6 @@ public class UI extends GridPane {
             String item = word + ": " + frequency;
             resultLv.getItems().add(item);
           }
-          long b = System.currentTimeMillis();
-          System.out.println("UI 刷新用时: " + (b - a));
         });
       });
       ioThread.start();
@@ -229,6 +233,14 @@ public class UI extends GridPane {
     minTfld.setTextFormatter(numberFormatter());
     maxTfld.setTextFormatter(numberFormatter());
 
+    // a TextField sets the ascending or descending order
+    TextField orderTfld = new TextField();
+    orderTfld.setPromptText("請輸入詞頻排序（0 為升序， 1 為降序)");
+    orderTfld.setTextFormatter(orderFormatter());
+
+    HBox paramsHb = new HBox();
+    paramsHb.getChildren().addAll(minTfld, maxTfld, orderTfld);
+
     // a path TextField and a button which browses and check out the path saving
     Button browseBtn = new Button("浏览导出位置");
     browseBtn.setOnAction(e -> addSelectionBox(false, exportPath));
@@ -239,12 +251,9 @@ public class UI extends GridPane {
     VBox vb2 = new VBox();
     vb2.getChildren().addAll(browseBtn, exportPathTfld);
 
-    // a TextField sets the ascending or descending order
-    TextField orderTfld = new TextField();
-    orderTfld.setPromptText("請輸入詞頻排序（0 為升序， 1 為降序)");
-    orderTfld.setTextFormatter(orderFormatter());
-    // a button executes the exporting logic
-
+    // buttons executes the exporting logic and close the window
+    Button cancelBtn = new Button("取消");
+    cancelBtn.setOnAction(e -> stage.close());
     Button okBtn = new Button("确认");
 
     // add clicked event to the OK button according to the radio button above
@@ -258,9 +267,13 @@ public class UI extends GridPane {
         okBtn.setOnAction(e -> exportFrequency(exportPath.get(), orderTfld, minTfld, maxTfld));
       }
     });
+
+    VBox vb3 = new VBox();
+    vb3.getChildren().addAll(okBtn, cancelBtn);
+
     // show the all controls
     HBox hb = new HBox();
-    hb.getChildren().addAll(vb1, minTfld, maxTfld, vb2, orderTfld, okBtn);
+    hb.getChildren().addAll(vb1, paramsHb, vb2, vb3);
     Scene scene = new Scene(hb);
     var url = ResourceUtil.getResourceURLStr("css/styles.css");
     scene.getStylesheets().add(url);
@@ -333,7 +346,6 @@ public class UI extends GridPane {
 
         // output the result
         try {
-          long a = System.currentTimeMillis();
           String word;
           int frequency;
           String result;
@@ -348,13 +360,10 @@ public class UI extends GridPane {
             writer.newLine();
           }
           writer.close();
-          long b = System.currentTimeMillis();
-          System.out.println("写出用时: " + (b - a));
         } catch (IOException e) {
           System.out.println("output error1: " + e);
         }
         Platform.runLater(() -> {
-          long a = System.currentTimeMillis();
           resultLv.getItems().clear();
           resultLv.getItems().add("導出成功！路徑： " + exportPath.get());
           for (Map.Entry<String, Integer> entry : countingResult) {
@@ -363,8 +372,6 @@ public class UI extends GridPane {
             String item = word + ": " + frequency;
             resultLv.getItems().add(item);
           }
-          long b = System.currentTimeMillis();
-          System.out.println("UI 刷新用时: " + (b - a));
         });
       });
       ioThread.start();
@@ -448,14 +455,11 @@ public class UI extends GridPane {
           System.out.println("output error2: " + e);
         }
         Platform.runLater(() -> {
-          long a = System.currentTimeMillis();
           resultLv.getItems().clear();
           resultLv.getItems().add("導出成功！路徑： " + exportPath.get());
           for (String result : rangeList) {
             resultLv.getItems().add(result);
           }
-          long b = System.currentTimeMillis();
-          System.out.println("UI 刷新用时: " + (b - a));
         });
       });
       ioThread.start();
