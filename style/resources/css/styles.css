@@ -1,6 +1,6 @@
 .root {
   -fx-background-color: lightblue;
-  -fx-padding: 20px;
+  -fx-padding: 10px;
 }
 
 .button {
@@ -13,10 +13,33 @@
   -fx-background-radius: 5px;
   -fx-padding: 10px;
   -fx-alignment: center;
-  -fx-cursor: hand;
-  -fx-background-color-hover: lightgreen;
-  -fx-background-color-pressed: red;
-  -fx-text-fill-disabled: transparent;
+}
+
+.button:hover,
+.radio-button:hover {
+  -fx-background-color: yellow;
+}
+
+.button:pressed,
+.radio-button:pressed,
+.radio-button:selected {
+  -fx-background-color: red;
+}
+
+.button:disabled {
+  -fx-text-fill: transparent;
+}
+
+.radio-button {
+  -fx-text-fill: white;
+  -fx-font-size: 14px;
+  -fx-font-weight: bold;
+  -fx-text-alignment: center;
+  -fx-padding: 10px;
+  -fx-background-color: green;
+  -fx-border-color: yellow;
+  -fx-border-radius: 5px;
+  -fx-spacing: 10px;
 }
 
 .text-field {
@@ -41,6 +64,7 @@
   -fx-background-color: white;
   -fx-border-color: grey;
   -fx-border-width: 1px;
+  -fx-border-style: solid inside;
   -fx-effect: dropshadow(gaussian, black, 10, 0, 2, 2);
   -fx-border-radius: 5px;
   -fx-border-insets: 10px;
@@ -75,22 +99,6 @@
   -fx-background-radius: 5px;
 }
 
-.radio-button {
-  -fx-text-fill: white;
-  -fx-font-size: 14px;
-  -fx-font-weight: bold;
-  -fx-text-alignment: center;
-  -fx-padding: 10px;
-  -fx-background-color: green;
-  -fx-border-color: yellow;
-  -fx-border-radius: 5px;
-  -fx-spacing: 10px;
-  -fx-cursor: hand;
-  -fx-background-color-hover: yellow;
-  -fx-background-color-pressed: red;
-  -fx-background-color-selected: red;
-}
-
 .label {
   -fx-font-size: 16px;
   -fx-font-weight: bold;
@@ -100,4 +108,39 @@
 .image-view {
   -fx-fit-width: 100%;
   -fx-fit-height: 100%;
+}
+
+.status-bar {
+  -fx-background-color: #f0f0f0;
+  -fx-padding: 5px;
+  -fx-font-size: 12px;
+}
+
+.menu-bar {
+  -fx-background-color: #f0f0f0;
+  -fx-padding: 5px;
+}
+
+.menu-bar .label {
+  -fx-text-fill: #444444;
+  -fx-font-size: 14px;
+  -fx-padding: 5px 10px;
+}
+
+.menu-bar .label:focused,
+.menu-bar .label:hover {
+  -fx-background-color: #e0e0e0;
+}
+
+.menu-bar .label:pressed {
+  -fx-background-color: #888888;
+  -fx-text-fill: white;
+}
+
+.button:default {
+  -fx-text-fill: blue;
+}
+
+.button:cancel {
+  -fx-text-fill: red;
 }

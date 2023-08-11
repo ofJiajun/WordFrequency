@@ -70,9 +70,9 @@ public class UI extends GridPane {
     leftPane.getChildren().addAll(startBtn, exportBtn);
 
     // central controls
-    Label listLbl = new Label("结果");
+    Label listLbl = new Label("结果：");
     resultLv = new ListView<>();
-    resultLv.setAccessibleText("结果");
+    listLbl.setLabelFor(resultLv);
     searchWord(resultLv);
     ScrollPane scrollPane = new ScrollPane();
     scrollPane.setContent(resultLv);
